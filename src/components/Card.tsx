@@ -7,6 +7,7 @@ import {
   ViewStyle,
   Image,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SPACING, BORDER_RADIUS, FONT_SIZES, SHADOWS } from '../utils/constants';
 import { formatRelativeTime, truncateText } from '../utils/formatters';
 
@@ -79,7 +80,7 @@ const Card: React.FC<CardProps> = ({
       {/* Footer - Estatísticas */}
       <View style={styles.footer}>
         <View style={styles.stat}>
-          <Text style={styles.statIcon}>💡</Text>
+          <Ionicons name="bulb-outline" size={18} color={COLORS.primary} />
           <Text style={styles.statText}>
             {solutionsCount} {solutionsCount === 1 ? 'solução' : 'soluções'}
           </Text>
@@ -87,6 +88,7 @@ const Card: React.FC<CardProps> = ({
         
         <View style={styles.badge}>
           <Text style={styles.badgeText}>Ver desafio</Text>
+          <Ionicons name="arrow-forward" size={14} color={COLORS.primary} />
         </View>
       </View>
     </TouchableOpacity>
@@ -112,8 +114,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 40,
-    height: 40,
+    width: 48,
+    height: 48,
     borderRadius: BORDER_RADIUS.md,
   },
   logoPlaceholder: {
@@ -123,8 +125,8 @@ const styles = StyleSheet.create({
   },
   logoText: {
     color: COLORS.surface,
-    fontSize: FONT_SIZES.lg,
-    fontWeight: '600',
+    fontSize: FONT_SIZES.xl,
+    fontWeight: '700',
   },
   enterpriseDetails: {
     flex: 1,
@@ -169,17 +171,17 @@ const styles = StyleSheet.create({
   stat: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  statIcon: {
-    fontSize: 16,
-    marginRight: SPACING.xs,
+    gap: SPACING.xs,
   },
   statText: {
     fontSize: FONT_SIZES.sm,
     color: COLORS.textSecondary,
   },
   badge: {
-    backgroundColor: COLORS.primaryLight,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.xs,
+    backgroundColor: COLORS.primaryLight + '20', // 20 = opacity
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.xs,
     borderRadius: BORDER_RADIUS.full,

@@ -1,24 +1,21 @@
-// ===== CORES DO APP =====
+// ===== CORES DO APP (BASEADAS NO DESIGN REAL) =====
 export const COLORS = {
-  // Primárias
-  primary: '#6366F1',      // Indigo (cor principal do HireUp)
-  primaryDark: '#4F46E5',
-  primaryLight: '#818CF8',
+  // Primária (Roxo HireUp)
+  primary: '#6366F1',      // Roxo principal
+  primaryDark: '#4F46E5',  // Roxo escuro (hover/pressed)
+  primaryLight: '#818CF8', // Roxo claro
   
-  // Secundárias
-  secondary: '#EC4899',    // Pink
-  secondaryDark: '#DB2777',
-  secondaryLight: '#F472B6',
-  
-  // Neutras
-  background: '#F9FAFB',   // Cinza muito claro
-  surface: '#FFFFFF',      // Branco
-  card: '#FFFFFF',
+  // Backgrounds
+  background: '#F9FAFB',   // Cinza muito claro (telas internas)
+  backgroundAuth: '#6366F1', // Roxo (telas de auth)
+  surface: '#FFFFFF',      // Branco (cards, inputs)
+  surfaceSecondary: '#E5E7EB', // Cinza claro (telas de cadastro)
   
   // Texto
-  text: '#111827',         // Preto suave
+  text: '#111827',         // Preto suave (texto principal)
   textSecondary: '#6B7280', // Cinza médio
-  textLight: '#9CA3AF',    // Cinza claro
+  textLight: '#9CA3AF',    // Cinza claro (placeholders)
+  textOnPrimary: '#FFFFFF', // Branco (texto em roxo)
   
   // Estados
   success: '#10B981',      // Verde
@@ -30,13 +27,26 @@ export const COLORS = {
   border: '#E5E7EB',       // Cinza para bordas
   divider: '#F3F4F6',      // Cinza para divisores
   
+  // Input
+  inputBackground: '#FFFFFF',
+  inputBorder: '#E5E7EB',
+  inputBorderFocused: '#6366F1',
+  inputPlaceholder: '#9CA3AF',
+  
+  // Botão
+  buttonPrimary: '#6366F1',
+  buttonPrimaryText: '#FFFFFF',
+  buttonSecondary: '#FFFFFF',
+  buttonSecondaryText: '#6366F1',
+  buttonSecondaryBorder: '#6366F1',
+  
   // Overlay
   overlay: 'rgba(0, 0, 0, 0.5)',
   overlayLight: 'rgba(0, 0, 0, 0.3)',
   
-  // Específicos de tipo de usuário
-  employer: '#6366F1',     // Cor para Employer (Profissional)
-  enterprise: '#EC4899',   // Cor para Enterprise (Empresa)
+  // Ícone de perfil placeholder
+  avatarPlaceholder: '#E0E7FF', // Roxo muito claro
+  avatarIcon: '#6366F1',
 };
 
 // ===== TAMANHOS DE FONTE =====
@@ -49,6 +59,14 @@ export const FONT_SIZES = {
   xxl: 24,
   xxxl: 32,
   huge: 48,
+};
+
+// ===== FONT WEIGHTS =====
+export const FONT_WEIGHTS = {
+  regular: '400' as const,
+  medium: '500' as const,
+  semibold: '600' as const,
+  bold: '700' as const,
 };
 
 // ===== ESPAÇAMENTOS =====
@@ -64,16 +82,23 @@ export const SPACING = {
 
 // ===== BORDER RADIUS =====
 export const BORDER_RADIUS = {
-  sm: 4,
-  md: 8,
-  lg: 12,
-  xl: 16,
-  xxl: 24,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 24,
+  xxl: 32,
   full: 9999,
 };
 
 // ===== SOMBRAS =====
 export const SHADOWS = {
+  none: {
+    shadowColor: 'transparent',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0,
+    shadowRadius: 0,
+    elevation: 0,
+  },
   sm: {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
@@ -95,74 +120,28 @@ export const SHADOWS = {
     shadowRadius: 8,
     elevation: 5,
   },
-  xl: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.2,
-    shadowRadius: 16,
-    elevation: 8,
-  },
+};
+
+// ===== ÍCONES (Expo Vector Icons) =====
+export const ICONS = {
+  user: 'person-outline',
+  briefcase: 'briefcase-outline',
+  mail: 'mail-outline',
+  lock: 'lock-closed-outline',
+  phone: 'call-outline',
+  id: 'card-outline',
+  back: 'arrow-back',
+  camera: 'camera-outline',
+  checkmark: 'checkmark-circle',
+  close: 'close-circle',
 };
 
 // ===== SKILLS DISPONÍVEIS =====
 export const AVAILABLE_SKILLS = [
-  // Frontend
-  'React Native',
-  'React',
-  'JavaScript',
-  'TypeScript',
-  'Vue.js',
-  'Angular',
-  'HTML/CSS',
-  'Tailwind CSS',
-  
-  // Backend
-  'Node.js',
-  'C#',
-  '.NET',
-  'Python',
-  'Java',
-  'PHP',
-  'Ruby',
-  'Go',
-  
-  // Mobile
-  'iOS',
-  'Android',
-  'Flutter',
-  'Swift',
-  'Kotlin',
-  
-  // Design
-  'UI/UX',
-  'Figma',
-  'Adobe XD',
-  'Photoshop',
-  'Illustrator',
-  
-  // Data & Cloud
-  'SQL',
-  'MongoDB',
-  'PostgreSQL',
-  'Firebase',
-  'AWS',
-  'Azure',
-  'Docker',
-  'Kubernetes',
-  
-  // Outros
-  'DevOps',
-  'Git',
-  'Scrum',
-  'Agile',
-];
-
-// ===== TIPOS DE EXPERIÊNCIA =====
-export const EXPERIENCE_TYPES = [
-  { value: 'work', label: 'Trabalho' },
-  { value: 'education', label: 'Educação' },
-  { value: 'project', label: 'Projeto' },
-  { value: 'volunteer', label: 'Voluntariado' },
+  'React Native', 'React', 'JavaScript', 'TypeScript',
+  'Node.js', 'C#', '.NET', 'Python', 'Java',
+  'UI/UX', 'Figma', 'Design',
+  'SQL', 'MongoDB', 'Firebase', 'AWS', 'Azure',
 ];
 
 // ===== SETORES DE EMPRESAS =====
@@ -175,10 +154,6 @@ export const COMPANY_FIELDS = [
   'Indústria',
   'Serviços',
   'Agronegócio',
-  'Energia',
-  'Construção',
-  'Logística',
-  'Entretenimento',
   'Outro',
 ];
 
@@ -202,9 +177,6 @@ export const MESSAGES = {
   LOGOUT_SUCCESS: 'Logout realizado com sucesso!',
   REGISTER_SUCCESS: 'Conta criada com sucesso!',
   UPDATE_SUCCESS: 'Perfil atualizado com sucesso!',
-  DELETE_SUCCESS: 'Item deletado com sucesso!',
-  SOLUTION_SENT: 'Solução enviada com sucesso!',
-  PROBLEM_CREATED: 'Desafio criado com sucesso!',
 };
 
 // ===== REGEX PATTERNS =====

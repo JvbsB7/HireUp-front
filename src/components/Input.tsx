@@ -8,16 +8,18 @@ import {
   TouchableOpacity,
   ViewStyle,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SPACING, BORDER_RADIUS, FONT_SIZES } from '../utils/constants';
 
 // ===== TIPOS =====
 interface InputProps extends TextInputProps {
   label?: string;
   error?: string;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
+  leftIcon?: keyof typeof Ionicons.glyphMap;
+  rightIcon?: keyof typeof Ionicons.glyphMap;
   containerStyle?: ViewStyle;
   isPassword?: boolean;
+  onRightIconPress?: () => void;
 }
 
 // ===== COMPONENTE =====
@@ -29,6 +31,7 @@ const Input: React.FC<InputProps> = ({
   containerStyle,
   isPassword = false,
   secureTextEntry,
+  onRightIconPress,
   ...rest
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -40,7 +43,7 @@ const Input: React.FC<InputProps> = ({
 
   return (
     <View style={[styles.container, containerStyle]}>
-      {/* Label */}
+      {/* Label - Não mostrar nas telas de auth */}
       {label && <Text style={styles.label}>{label}</Text>}
 
       {/* Input Container */}
@@ -52,12 +55,19 @@ const Input: React.FC<InputProps> = ({
         ]}
       >
         {/* Left Icon */}
-        {leftIcon && <View style={styles.leftIcon}>{leftIcon}</View>}
+        {leftIcon && (
+          <Ionicons
+            name={leftIcon}
+            size={22}
+            color={COLORS.text}
+            style={styles.leftIcon}
+          />
+        )}
 
         {/* Text Input */}
         <TextInput
-          style={[styles.input, leftIcon ? styles.inputWithLeftIcon : undefined]}
-          placeholderTextColor={COLORS.textLight}
+          style={[styles.input, leftIcon && styles.inputWithLeftIcon]}
+          placeholderTextColor={COLORS.inputPlaceholder}
           onFocus={handleFocus}
           onBlur={handleBlur}
           secureTextEntry={isPassword ? !isPasswordVisible : secureTextEntry}
@@ -68,19 +78,28 @@ const Input: React.FC<InputProps> = ({
         {/* Password Toggle Icon */}
         {isPassword && (
           <TouchableOpacity
-            style={styles.rightIcon}
             onPress={togglePasswordVisibility}
+            style={styles.rightIcon}
             activeOpacity={0.7}
           >
-            <Text style={styles.eyeIcon}>
-              {isPasswordVisible ? '👁️' : '👁️‍🗨️'}
-            </Text>
+            <Ionicons
+              name={isPasswordVisible ? 'eye-off-outline' : 'eye-outline'}
+              size={22}
+              color={COLORS.textSecondary}
+            />
           </TouchableOpacity>
         )}
 
-        {/* Right Icon */}
+        {/* Right Icon (custom) */}
         {!isPassword && rightIcon && (
-          <View style={styles.rightIcon}>{rightIcon}</View>
+          <TouchableOpacity
+            onPress={onRightIconPress}
+            style={styles.rightIcon}
+            activeOpacity={0.7}
+            disabled={!onRightIconPress}
+          >
+            <Ionicons name={rightIcon} size={22} color={COLORS.textSecondary} />
+          </TouchableOpacity>
         )}
       </View>
 
@@ -104,18 +123,23 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.surface,
-    borderRadius: BORDER_RADIUS.md,
-    borderWidth: 1,
-    borderColor: COLORS.border,
+    backgroundColor: COLORS.inputBackground,
+    borderRadius: BORDER_RADIUS.xl, // Bem arredondado como nas imagens
+    borderWidth: 0, // Sem borda por padrão
     paddingHorizontal: SPACING.md,
-    minHeight: 48,
+    minHeight: 56, // Altura maior
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
   },
   inputContainerFocused: {
-    borderColor: COLORS.primary,
     borderWidth: 2,
+    borderColor: COLORS.inputBorderFocused,
   },
   inputContainerError: {
+    borderWidth: 2,
     borderColor: COLORS.error,
   },
   input: {
@@ -125,22 +149,20 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.sm,
   },
   inputWithLeftIcon: {
-    marginLeft: SPACING.sm,
+    marginLeft: SPACING.xs,
   },
   leftIcon: {
     marginRight: SPACING.xs,
   },
   rightIcon: {
     marginLeft: SPACING.xs,
-  },
-  eyeIcon: {
-    fontSize: 20,
+    padding: SPACING.xs,
   },
   errorText: {
     fontSize: FONT_SIZES.xs,
     color: COLORS.error,
     marginTop: SPACING.xs,
-    marginLeft: SPACING.xs,
+    marginLeft: SPACING.md,
   },
 });
 

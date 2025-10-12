@@ -8,18 +8,20 @@ import {
   TextStyle,
   TouchableOpacityProps,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SPACING, BORDER_RADIUS, FONT_SIZES, SHADOWS } from '../utils/constants';
 
 // ===== TIPOS =====
 interface ButtonProps extends TouchableOpacityProps {
   title: string;
   onPress: () => void;
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'white';
   size?: 'small' | 'medium' | 'large';
   loading?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;
-  icon?: React.ReactNode;
+  leftIcon?: keyof typeof Ionicons.glyphMap;
+  rightIcon?: keyof typeof Ionicons.glyphMap;
   style?: ViewStyle;
   textStyle?: TextStyle;
 }
@@ -29,11 +31,12 @@ const Button: React.FC<ButtonProps> = ({
   title,
   onPress,
   variant = 'primary',
-  size = 'medium',
+  size = 'large',
   loading = false,
   disabled = false,
-  fullWidth = false,
-  icon,
+  fullWidth = true,
+  leftIcon,
+  rightIcon,
   style,
   textStyle,
   ...rest
@@ -52,17 +55,24 @@ const Button: React.FC<ButtonProps> = ({
       ]}
       onPress={onPress}
       disabled={isDisabled}
-      activeOpacity={0.7}
+      activeOpacity={0.8}
       {...rest}
     >
       {loading ? (
         <ActivityIndicator
-          color={variant === 'outline' || variant === 'ghost' ? COLORS.primary : COLORS.surface}
+          color={variant === 'white' ? COLORS.primary : COLORS.buttonPrimaryText}
           size="small"
         />
       ) : (
         <>
-          {icon && <>{icon}</>}
+          {leftIcon && (
+            <Ionicons
+              name={leftIcon}
+              size={22}
+              color={variant === 'white' ? COLORS.text : COLORS.buttonPrimaryText}
+              style={styles.leftIcon}
+            />
+          )}
           <Text
             style={[
               styles.text,
@@ -74,6 +84,14 @@ const Button: React.FC<ButtonProps> = ({
           >
             {title}
           </Text>
+          {rightIcon && (
+            <Ionicons
+              name={rightIcon}
+              size={22}
+              color={variant === 'white' ? COLORS.text : COLORS.buttonPrimaryText}
+              style={styles.rightIcon}
+            />
+          )}
         </>
       )}
     </TouchableOpacity>
@@ -86,59 +104,57 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: BORDER_RADIUS.md,
-    ...SHADOWS.sm,
+    borderRadius: BORDER_RADIUS.xl, // Bem arredondado
   },
   text: {
     fontWeight: '600',
     textAlign: 'center',
   },
+  leftIcon: {
+    marginRight: SPACING.sm,
+  },
+  rightIcon: {
+    marginLeft: SPACING.sm,
+  },
   
   // ===== VARIANTES =====
   primary: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.buttonPrimary,
+    ...SHADOWS.md,
   },
   primaryText: {
-    color: COLORS.surface,
+    color: COLORS.buttonPrimaryText,
   },
   
   secondary: {
-    backgroundColor: COLORS.secondary,
-  },
-  secondaryText: {
-    color: COLORS.surface,
-  },
-  
-  outline: {
     backgroundColor: 'transparent',
     borderWidth: 2,
-    borderColor: COLORS.primary,
+    borderColor: COLORS.buttonSecondaryBorder,
   },
-  outlineText: {
-    color: COLORS.primary,
+  secondaryText: {
+    color: COLORS.buttonSecondaryText,
   },
   
   ghost: {
     backgroundColor: 'transparent',
-    shadowOpacity: 0,
-    elevation: 0,
   },
   ghostText: {
     color: COLORS.primary,
   },
   
-  danger: {
-    backgroundColor: COLORS.error,
+  white: {
+    backgroundColor: COLORS.surface,
+    ...SHADOWS.md,
   },
-  dangerText: {
-    color: COLORS.surface,
+  whiteText: {
+    color: COLORS.text,
   },
   
   // ===== TAMANHOS =====
   small: {
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
-    minHeight: 36,
+    minHeight: 40,
   },
   smallText: {
     fontSize: FONT_SIZES.sm,
@@ -155,8 +171,8 @@ const styles = StyleSheet.create({
   
   large: {
     paddingHorizontal: SPACING.xl,
-    paddingVertical: SPACING.lg,
-    minHeight: 56,
+    paddingVertical: SPACING.md,
+    minHeight: 56, // Altura igual aos inputs
   },
   largeText: {
     fontSize: FONT_SIZES.lg,
