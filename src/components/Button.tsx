@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   ViewStyle,
+  StyleProp,
   TextStyle,
   TouchableOpacityProps,
 } from 'react-native';
@@ -20,7 +21,7 @@ interface ButtonProps extends TouchableOpacityProps {
   disabled?: boolean;
   fullWidth?: boolean;
   icon?: React.ReactNode;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   textStyle?: TextStyle;
 }
 
